@@ -1,0 +1,7 @@
+{:tasks
+ {:requires [babashka.process]
+  build {:task (do ^{:inherit true} (babashka.process/$ docker build -t slimslenderslacks/fswatch .))
+         :doc ""}
+  watch {:task (do ^{:inherit true} (babashka.process/shell
+                                     (let [pwd (.get (System/getenv) "PWD")]
+                                       (format "docker run -it -v %s:%s slimslenderslacks/fswatch %s" pwd pwd (str pwd "/" (first *command-line-args*))))))}}}
